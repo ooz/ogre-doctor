@@ -7,6 +7,8 @@ Description:
     Interactive ogre doctor
 '''
 
+import random
+
 class State:
     def __init__(self, onn, tuu, image=None, options=None):
         self.onn = onn
@@ -62,9 +64,23 @@ class bcolors:
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
-    ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+    ENDC = '\033[0m'
+colors = [bcolors.OKBLUE, bcolors.OKCYAN, bcolors.OKGREEN, bcolors.WARNING, bcolors.FAIL]
+
+def skip_first_line(image):
+    return "\n".join(image.split("\n")[1:]) # Cut intro text
+def drugs(image):
+    new_image = ""
+    for c in image:
+        color = random.choice(colors)
+        if c != '\n':
+            new_image += f"{color}{c}"
+        else:
+            new_image += '\n'
+    new_image += f"{bcolors.ENDC}"
+    return new_image
 
 MANIFEST = {
     "end": State("Alrighty, see you next time!", "Hehe.."),
@@ -76,9 +92,9 @@ MANIFEST = {
         Option("Okay, there's another thing I need help with...", "intro"),
         Option("I'll try a different doctor, thanks...", "end")
     ]),
-    "hand_drugs": State("Yeah?", "Yeah!", None, [
-        Option("Yeah?", "intro"),
-        Option("Yeah!", "end")
+    "hand_drugs": State(drugs("Yeah?"), drugs("Yeah!"), drugs(skip_first_line(intro_image)), [
+        Option(drugs("Yeah?"), "intro"),
+        Option(drugs("Yeah!"), "end")
     ]),
     "orcish": State("ZUG ZUG KEK!", "Lok'tar Ogar!", None, [
         Option("ZUG ZUG", "intro"),
