@@ -42,8 +42,13 @@ Requirements: a terminal emulator, Python 3 installed and on the $PATH
 ## Diversifiers
 
 * Sharing is caring
-* Out of many, one
+* Woodstock vibes
 * Based on a True Story
+* Out of many, one
+
+## Tech
+
+* ASCII art generated with https://ascii-generator.site/
 
 ## Credits
 
