@@ -1,6 +1,7 @@
 # Ogre Doctor
 
 GGJ24 "Make Me Laugh" entry. You super helpful command line doctor.
+Created while 🤒 in January 2024, Leipzig, Germany.
 
 ```
      WELCOME TO THE OGRE CLINIC! We are your certified doctor, Onn and Tuu!
