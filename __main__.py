@@ -54,6 +54,18 @@ lollipop_image = """------------------------------------------------------------
 ---------------------------%@*=-------------------------------------------------
 ---------------------------==---------------------------------------------------"""
 
+# https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 MANIFEST = {
     "end": State("Alrighty, see you next time!", "Hehe.."),
     "hand_lollipop": State("Here you go...", "...anything else?", lollipop_image, [
@@ -63,6 +75,10 @@ MANIFEST = {
     "hand_plaster": State("We are out of plasters, sorry.", "Onn ate the last pack. Anything else?", None, [
         Option("Okay, there's another thing I need help with...", "intro"),
         Option("I'll try a different doctor, thanks...", "end")
+    ]),
+    "hand_drugs": State("Yeah?", "Yeah!", None, [
+        Option("Yeah?", "intro"),
+        Option("Yeah!", "end")
     ]),
     "orcish": State("ZUG ZUG KEK!", "Lok'tar Ogar!", None, [
         Option("ZUG ZUG", "intro"),
@@ -107,17 +123,18 @@ def print_state(state_id):
         print("")
 
 def print_options(options):
-    idx = 0
+    idx = 1
     for option in options:
         print(f"""  {idx}: {option.text}""")
         idx += 1
 
 def get_input():
-    choice = 0
+    choice = 1
     try:
         choice = int(input("Your choice: "))
     except ValueError:
-        choice = 0
+        choice = 1
+    choice -= 1
     return choice
 
 def input2next_state(current_state_id, choice):
