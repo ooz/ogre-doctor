@@ -27325,7 +27325,7 @@ var require_sdp = __commonJS((exports, module) => {
 });
 
 // src/main.ts
-var Phaser = __toESM(require_phaser_min(), 1);
+var Phaser2 = __toESM(require_phaser_min(), 1);
 var gyro_min = __toESM(require_gyro_min(), 1);
 
 // node_modules/peerjs-js-binarypack/dist/binarypack.mjs
@@ -33715,6 +33715,48 @@ class $416260bce337df90$export$ecd1fc136c422448 extends (0, $23779d1881157a18$ex
 }
 var $dcf98445f54823f4$var$NullValue = Symbol.for(null);
 
+// src/util.ts
+var Phaser = __toESM(require_phaser_min(), 1);
+function getParameters() {
+  let url = new URL(window.location.href);
+  let gameId = url.searchParams.get("gameId") || createGameId();
+  let singlePlayer = url.searchParams.get("sp") || "false";
+  singlePlayer = singlePlayer == "true" ? true : false;
+  let player = "screen";
+  let playerId = "screen";
+  if (gameId.startsWith("pp_")) {
+    gameId = gameId.substr(3);
+    player = "pp";
+    playerId = createGameId();
+    singlePlayer = false;
+  }
+  if (gameId.startsWith("sp_")) {
+    gameId = gameId.substr(3);
+    player = "sp";
+    playerId = createGameId();
+    singlePlayer = true;
+  }
+  return {
+    gameId,
+    player,
+    playerId,
+    singlePlayer
+  };
+}
+var createGameId = function() {
+  return [...Array(64)].map((i) => (~~(Math.random() * 36)).toString(36)).join("");
+};
+function get(id) {
+  return document.getElementById(id);
+}
+function removeElement(elemId) {
+  let toRemove = get(elemId);
+  toRemove?.parentNode?.removeChild(toRemove);
+}
+function random(min, max) {
+  return Phaser.Math.RND.between(min, max);
+}
+
 // src/main.ts
 var preload = function() {
   if (_isGameScreen()) {
@@ -33870,11 +33912,11 @@ var create = function() {
     sounds.woosh = this.sound.add("woosh");
     sounds.krachBumm = this.sound.add("krach_bumm");
     goldUI = this.add.text(300, 10, "", { font: "16px Courier", fill: "#ffff00" });
-    var thisGameLink = "https://ooz.github.io/ogre-forge/?gameId=" + parameters.gameId + "&sp=" + parameters.singlePlayer;
-    get("restart-game-link").setAttribute("href", encodeURI(thisGameLink));
+    var thisGameLink = "https://ooz.github.io/ogre-doctor/?gameId=" + parameters.gameId + "&sp=" + parameters.singlePlayer;
+    get("restart-game-link")?.setAttribute("href", encodeURI(thisGameLink));
     var gameType = parameters.singlePlayer ? "sp" : "pp";
-    var gameUrl = "https://ooz.github.io/ogre-forge/?gameId=" + gameType + "_" + parameters.gameId;
-    get("game-qrcode").setAttribute("src", "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chld=L|0&chl=" + encodeURI(gameUrl));
+    var gameUrl = "https://ooz.github.io/ogre-doctor/?gameId=" + gameType + "_" + parameters.gameId;
+    get("game-qrcode")?.setAttribute("src", "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chld=L|0&chl=" + encodeURI(gameUrl));
     removeElement("smartphone-instructions");
   } else {
     removeElement("game-setup");
@@ -34033,50 +34075,11 @@ var _fadeOutEffect = function(effectName) {
     effects[effectName].alpha = alpha;
   }
 };
-var getParameters = function() {
-  var url = new URL(window.location.href);
-  var gameId = url.searchParams.get("gameId") || createGameId();
-  var singlePlayer = url.searchParams.get("sp") || "false";
-  singlePlayer = singlePlayer == "true" ? true : false;
-  var player = "screen";
-  var playerId = "screen";
-  if (gameId.startsWith("pp_")) {
-    gameId = gameId.substr(3);
-    player = "pp";
-    playerId = createGameId();
-    singlePlayer = false;
-  }
-  if (gameId.startsWith("sp_")) {
-    gameId = gameId.substr(3);
-    player = "sp";
-    playerId = createGameId();
-    singlePlayer = true;
-  }
-  return {
-    gameId,
-    player,
-    playerId,
-    singlePlayer
-  };
-};
-var createGameId = function() {
-  return [...Array(64)].map((i) => (~~(Math.random() * 36)).toString(36)).join("");
-};
-var get = function(id) {
-  return document.getElementById(id);
-};
-var removeElement = function(elemId) {
-  var toRemove = get(elemId);
-  toRemove.parentNode.removeChild(toRemove);
-};
-var random = function(min, max) {
-  return Phaser.Math.RND.between(min, max);
-};
 var debug = function(text) {
   if (text !== "")
     console.log(text);
   debugLines.push(text);
-  var nrDebugLines = DEBUG ? 5 : 1;
+  let nrDebugLines = DEBUG ? 5 : 1;
   while (debugLines.length > nrDebugLines) {
     debugLines.shift();
   }
@@ -34086,20 +34089,20 @@ var debug = function(text) {
 };
 var WEAPON_TYPES = ["hammer", "sword", "staff", "heart"];
 var FIRST_WEAPON = "hammer";
-var DEBUG = false;
+var DEBUG = true;
 var parameters = getParameters();
 var WIDTH = _isGameScreen() ? 600 : 300;
 var HEIGHT = _isGameScreen() ? 300 : 600;
 var config = {
-  type: Phaser.AUTO,
+  type: Phaser2.AUTO,
   width: WIDTH,
   height: HEIGHT,
   parent: "game-container",
   fullscreenTarget: "game-container",
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser2.Scale.FIT,
     parent: "game-container",
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    autoCenter: Phaser2.Scale.CENTER_BOTH,
     width: WIDTH,
     height: HEIGHT
   },
@@ -34119,7 +34122,7 @@ var config = {
   },
   backgroundColor: "#c2b280"
 };
-var game = new Phaser.Game(config);
+var game = new Phaser2.Game(config);
 var players = {
   body: null,
   p1: {
@@ -34300,7 +34303,7 @@ var weapon = {
       return;
     }
     if (this.sprite.body.speed > 0) {
-      var distance = Phaser.Math.Distance.Between(this.sprite.x, this.sprite.y, this.target.x, this.target.y);
+      var distance = Phaser2.Math.Distance.Between(this.sprite.x, this.sprite.y, this.target.x, this.target.y);
       if (distance < 8 || this.sprite.y > 310 && distance < 16 || this.sprite.y < -10 && distance < 16) {
         this.sprite.body.reset(this.target.x, this.target.y);
         if (this.sprite.y > 330) {

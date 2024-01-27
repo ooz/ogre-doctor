@@ -13,10 +13,11 @@ p2_<action>       .. player 2 action command
 import * as Phaser from "../lib/phaser.min.js"
 import gyro from "../lib/gyro.min.js"
 import { Peer } from "peerjs";
+import { get, getParameters, random, removeElement } from "./util.js";
 
 const WEAPON_TYPES = ['hammer', 'sword', 'staff', 'heart']
 const FIRST_WEAPON = 'hammer'
-const DEBUG = false;
+const DEBUG = true;
 
 var parameters = getParameters();
 
@@ -440,13 +441,13 @@ function create() {
 
         goldUI = this.add.text(300, 10, '', { font: '16px Courier', fill: '#ffff00' });
 
-        var thisGameLink = 'https://ooz.github.io/ogre-forge/?gameId=' + parameters.gameId + '&sp=' + parameters.singlePlayer;
-        get('restart-game-link').setAttribute('href', encodeURI(thisGameLink));
+        var thisGameLink = 'https://ooz.github.io/ogre-doctor/?gameId=' + parameters.gameId + '&sp=' + parameters.singlePlayer;
+        get('restart-game-link')?.setAttribute('href', encodeURI(thisGameLink));
 
         var gameType = (parameters.singlePlayer) ? 'sp' : 'pp';
-        var gameUrl = 'https://ooz.github.io/ogre-forge/?gameId=' + gameType + '_' + parameters.gameId;
+        var gameUrl = 'https://ooz.github.io/ogre-doctor/?gameId=' + gameType + '_' + parameters.gameId;
         // https://developers.google.com/chart/infographics/docs/qr_codes?csw=1
-        get('game-qrcode').setAttribute('src', 'https://chart.googleapis.com/chart?cht=qr&chs=250x250&chld=L|0&chl=' + encodeURI(gameUrl));
+        get('game-qrcode')?.setAttribute('src', 'https://chart.googleapis.com/chart?cht=qr&chs=250x250&chld=L|0&chl=' + encodeURI(gameUrl));
 
         removeElement('smartphone-instructions')
     } else {
@@ -632,57 +633,11 @@ function _fadeOutEffect(effectName) {
 }
 // ## GAME CALLBACKS END
 
-// ## UTIL LIB
-function getParameters() {
-    var url = new URL(window.location.href)
-    var gameId = url.searchParams.get('gameId') || createGameId();
-    var singlePlayer = url.searchParams.get('sp') || 'false';
-    singlePlayer = (singlePlayer == 'true') ? true : false;
-    var player = 'screen';
-    var playerId = 'screen'
-    if (gameId.startsWith('pp_')) {
-        gameId = gameId.substr(3);
-        player = 'pp';
-        playerId = createGameId();
-        singlePlayer = false;
-    }
-    if (gameId.startsWith('sp_')) {
-        gameId = gameId.substr(3);
-        player = 'sp';
-        playerId = createGameId();
-        singlePlayer = true;
-    }
-    return {
-        'gameId': gameId,
-        'player': player,
-        'playerId': playerId,
-        'singlePlayer': singlePlayer
-    }
-}
-
-function createGameId() {
-    // From https://gist.github.com/6174/6062387
-    return [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
-}
-
-function get(id) {
-    return document.getElementById(id)
-}
-
-function removeElement(elemId) {
-    var toRemove = get(elemId);
-    toRemove.parentNode.removeChild(toRemove);
-}
-
-function random(min, max) {
-    return Phaser.Math.RND.between(min, max);
-}
-
-var debugLines = [];
-function debug(text) {
+let debugLines = [];
+function debug(text: string) {
     if (text !== "") console.log(text);
     debugLines.push(text);
-    var nrDebugLines = (DEBUG) ? 5 : 1;
+    let nrDebugLines = (DEBUG) ? 5 : 1;
     while (debugLines.length > nrDebugLines) {
         debugLines.shift()
     }
@@ -690,4 +645,3 @@ function debug(text) {
         debugConsole.setText(debugLines)
     }
 }
-// ## UTIL LIB END
