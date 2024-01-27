@@ -1,7 +1,0 @@
-{
-  "dependencies": { "peerjs": "^1.5.2" },
-  "devDependencies": {
-    "@types/web": "^0.0.135",
-    "bun-types": "^1.0.25"
-  }
-}

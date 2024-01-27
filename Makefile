@@ -1,13 +1,13 @@
 .PHONY: all build clean install_dependencies test me laugh help
 
-all: build ## Main task for local dev
-	python3 -m http.server
+all: ## Main task for running the game
+	@python3 ./
 
 build: test ## Bunbles and minifies the project
 	bun script/bundle.ts
 
 clean: ## Cleans all artifacts
-	rm -rf build/
+	rm -rf __pycache__/
 
 install_dependencies: ## Install dependencies
 	sudo apt install cowsay
@@ -25,6 +25,8 @@ SET_JOKE = $(eval GGJ24_JOKE=$(GENERATE_JOKE))
 me: ## Easter egg
 	$(SET_JOKE)
 	@cowsay $(GGJ24_JOKE)
+	@read -p "Did you laugh? (y/n) " answer; \
+	echo "$$answer"
 laugh: ## Easter egg
 	@echo "Hihi"
 
