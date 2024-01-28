@@ -93,8 +93,9 @@ MANIFEST = {
         Option("I'll try a different doctor, thanks...", "end")
     ]),
     "hand_drugs": State(drugs("Yeah?"), drugs("Yeah!"), drugs(skip_first_line(intro_image)), [
-        Option(drugs("Yeah?"), "intro"),
-        Option(drugs("Yeah!"), "end")
+        Option(drugs("Yeah?"), "hand_drugs"),
+        Option(drugs("Yeah!"), "intro"),
+        Option(drugs("Yeah..."), "end")
     ]),
     "orcish": State("ZUG ZUG KEK!", "Lok'tar Ogar!", None, [
         Option("ZUG ZUG", "intro"),
