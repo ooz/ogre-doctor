@@ -1,6 +1,6 @@
 # Ogre Doctor
 
-GGJ24 "Make Me Laugh" entry. You super helpful command line doctor.
+GGJ24 "Make Me Laugh" entry. Your super helpful command line doctor.
 Created while 🤒 in January 2024, Leipzig, Germany.
 
 ```
